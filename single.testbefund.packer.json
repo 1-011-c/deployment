@@ -3,43 +3,29 @@
   "builders": [
     {
       "type": "virtualbox-iso",
-      "vm_name": "single-testbefund-alpine-k3s",
-      "format": "ova",
+      "vm_name": "single-testbefund-debian-10-k3s",
       "output_directory": "release",
       "guest_os_type": "Linux_64",
-      "iso_url": "http://dl-cdn.alpinelinux.org/alpine/v3.11/releases/x86_64/alpine-virt-3.11.5-x86_64.iso",
-      "iso_checksum": "8e14a8f23d1d0a3772d486a94a7d707df65a942e605617ed6431fcb1ede387e4",
+      "iso_url": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-10.3.0-amd64-netinst.iso",
+      "iso_checksum": "6a901b5abe43d88b39d627e1339d15507cc38f980036b928f835e0f0e957d3d8",
       "iso_checksum_type": "sha256",
       "cpus": 1,
       "memory": 2096,
       "disk_size": 3000,
       "ssh_username": "root",
+      "http_directory": "httpdir",
+      "boot_wait": "10s",
       "boot_command": [
-        "root<return>",
-        "<return>",
-        "setup-hostname -n testbefund<return>",
-        "setup-interfaces -i<return>",
-        "auto lo<return>",
-        "iface lo inet loopback<return>",
-        "<return>",
-        "auto eth0<return>",
-        "iface eth0 inet dhcp<return>",
-        "<tab>hostname testbefund<return>",
-        "<leftCtrlOn>d<leftCtrlOff>",
-        "rc-update add networking<return>",
-        "ifup eth0<return><wait15s>",
-        "setup-apkrepos -f<return>",
-        "apk update<return>",
-        "apk add syslinux sfdisk<return>",
-        "setup-sshd -c openssh<return>",
-        "mkdir ~/.ssh<return>",
-        "echo \"{{ .SSHPublicKey }}\" > ~/.ssh/authorized_keys<return>",
-        "chmod -r 600 ~/.ssh<return>",
-        "setup-disk -v -L -s 0 -m sys /dev/sda<return>",
-        "y<return>",
-        "eject<return>",
-        "reboot<return>"
-      ]
+        "<esc><wait>",
+        "<esc><wait>",
+        "install<wait>",
+        " auto-install/enable=true",
+        " debconf/priority=critical",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.txt<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "shutdown_command": "poweroff"
     }
   ]
 }
