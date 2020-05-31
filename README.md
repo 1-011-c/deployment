@@ -1,4 +1,4 @@
-# testbefund deployment
+# testbefund deployment (UNDER CONSTRUCTION)
 
 Kubernetes based single instance deployment of the Testbefund services.
 
