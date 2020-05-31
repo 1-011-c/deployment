@@ -9,7 +9,7 @@
       "iso_url": "http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso",
       "iso_checksum": "8388f7232b400bdc80279668847f90da",
       "iso_checksum_type": "md5",
-      "cpus": 1,
+      "cpus": 2,
       "memory": 2096,
       "disk_size": 3000,
       "ssh_username": "root",
@@ -29,6 +29,25 @@
         "<enter><wait>"
       ],
       "shutdown_command": "poweroff"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [ "mkdir /tmp/kustomize" ]
+    },
+    {
+      "type": "file",
+      "source": "kustomize/",
+      "destination": "/tmp/kustomize/"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-k3s.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/deploy.sh"
     }
   ]
 }
